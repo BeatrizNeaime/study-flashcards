@@ -1,14 +1,20 @@
-import { View, SafeAreaView, StatusBar, ScrollView, Text } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  StatusBar,
+  ScrollView,
+  Text,
+  KeyboardAvoidingView,
+} from "react-native";
 import bg from "@/assets/images/Ellipse.png";
 import { Image } from "react-native";
 import Title from "@/components/Title";
 import Input from "../../components/Input";
-import Button from "@/components/Button";
+import Button from "../../components/Button";
 import { useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { router } from "expo-router";
-import { FIREBASE_AUTH } from "../../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import auth from "@react-native-firebase/auth";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -16,35 +22,14 @@ const Login = () => {
     password: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const auth = FIREBASE_AUTH;
 
   const signIn = async () => {
     setIsSubmitting(true);
     try {
-      const res = await signInWithEmailAndPassword(
-        auth,
-        form.email,
-        form.password
-      );
-      console.log(res);
-    } catch (error) {
-      console.log(error.message);
-    } finally {
+      await auth().signInWithEmailAndPassword(form.email, form.password);
       setIsSubmitting(false);
-    }
-  };
-
-  const signUp = async () => {
-    setIsSubmitting(true);
-    try {
-      const res = await createUserWithEmailAndPassword(
-        auth,
-        form.email,
-        form.password
-      );
-      console.log(res);
     } catch (error) {
-      console.log(error.message);
+      alert(error.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -65,7 +50,7 @@ const Login = () => {
             className="absolute top-0 right-0 w-full"
           />
           <Title otherStyles="mt-[120px] mb-[50px]" label={"Entrar"} />
-          <View className="px-4">
+          <KeyboardAvoidingView behavior="padding" className="px-4">
             <Input
               otherStyles={"mb-[40px]"}
               label={"E-mail"}
@@ -102,7 +87,7 @@ const Login = () => {
                 </Text>
               </Text>
             </TouchableOpacity>
-          </View>
+          </KeyboardAvoidingView>
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity } from "react-native";
+import { ActivityIndicator, Text, TouchableOpacity } from "react-native";
 import { useFonts, Poppins_700Bold } from "@expo-google-fonts/poppins";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -29,7 +29,7 @@ const Button = ({
   return (
     <TouchableOpacity
       className={`${sizeClass}  flex items-center justify-center ${otherStyles} ${
-        isLoading ? "opacity-5" : ""
+        isLoading ? "opacity-6" : ""
       } `}
       onPress={handleClick}
       style={{
@@ -48,11 +48,19 @@ const Button = ({
         locations={[0, 0.49, 0.94]} // Posições relativas das cores
         start={{ x: 0, y: 0 }} // Início (extremo esquerdo)
         end={{ x: 1, y: 0 }}
-        className="h-full rounded-lg w-full m-0 px-5 items-center justify-center"
+        className="h-full rounded-lg w-full m-0 px-5 items-center justify-center flex flex-row"
       >
         <Text className={`${fontSize} ${textStyles} font-bold text-white`}>
           {label}
         </Text>
+        {isLoading && (
+          <ActivityIndicator
+            animating={isLoading}
+            color="#fff"
+            size="small"
+            className="ml-2"
+          />
+        )}
       </LinearGradient>
     </TouchableOpacity>
   );

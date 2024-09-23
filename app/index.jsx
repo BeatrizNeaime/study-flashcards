@@ -13,12 +13,21 @@ import cards from "../assets/images/cards.png";
 import Button from "../components/Button";
 import { router } from "expo-router";
 import Title from "./../components/Title";
+import { useEffect, useState } from "react";
 
 export default function Index() {
   let [fontsLoaded] = useFonts({
     Poppins_600Regular,
     Nunito_400Regular,
   });
+
+  const [user, setuser] = useState();
+
+  useEffect(() => {
+    if (user) {
+      router.push("tabs");
+    }
+  }, []);
 
   return (
     <SafeAreaView className="h-full bg-white">

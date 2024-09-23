@@ -14,6 +14,8 @@ import Button from "../../components/Button";
 import { useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { router } from "expo-router";
+import { FIREBASE_AUTH } from "../../firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -23,12 +25,26 @@ const SignUp = () => {
     confirmPassword: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const auth = FIREBASE_AUTH;
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (form.password !== form.confirmPassword) {
       alert("As senhas não coincidem");
       setForm({ ...form, confirmPassword: "" });
       return;
+    }
+
+    try {
+      const res = await createUserWithEmailAndPassword(
+        FIREBASE_AUTH,
+        form.email,
+        form.password
+      );
+      console.log(res);
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setIsSubmitting(false);
     }
 
     console.log(form);
@@ -49,7 +65,7 @@ const SignUp = () => {
             className="absolute top-0 right-0 w-full"
           />
           <Title otherStyles="mt-[120px] mb-[50px]" label={"Cadastro"} />
-          <KeyboardAvoidingView className="px-4">
+          <KeyboardAvoidingView behavior="padding" className="px-4">
             <Input
               otherStyles={"mb-[40px]"}
               label={"Nome"}
