@@ -28,7 +28,7 @@ const Button = ({
 
   return (
     <TouchableOpacity
-      className={`${sizeClass}  flex items-center justify-center mt-10 ${otherStyles} ${
+      className={`${sizeClass}  flex items-center justify-center ${otherStyles} ${
         isLoading ? "opacity-5" : ""
       } `}
       onPress={handleClick}

@@ -1,53 +1,37 @@
-import { View, SafeAreaView, StatusBar, ScrollView, Text } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  StatusBar,
+  ScrollView,
+  Text,
+  KeyboardAvoidingView,
+} from "react-native";
 import bg from "@/assets/images/Ellipse.png";
 import { Image } from "react-native";
 import Title from "@/components/Title";
 import Input from "../../components/Input";
-import Button from "@/components/Button";
+import Button from "../../components/Button";
 import { useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { router } from "expo-router";
-import { FIREBASE_AUTH } from "../../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
 
-const Login = () => {
+const SignUp = () => {
   const [form, setForm] = useState({
     email: "",
     password: "",
+    name: "",
+    confirmPassword: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const auth = FIREBASE_AUTH;
 
-  const signIn = async () => {
-    setIsSubmitting(true);
-    try {
-      const res = await signInWithEmailAndPassword(
-        auth,
-        form.email,
-        form.password
-      );
-      console.log(res);
-    } catch (error) {
-      console.log(error.message);
-    } finally {
-      setIsSubmitting(false);
+  const onSubmit = () => {
+    if (form.password !== form.confirmPassword) {
+      alert("As senhas não coincidem");
+      setForm({ ...form, confirmPassword: "" });
+      return;
     }
-  };
 
-  const signUp = async () => {
-    setIsSubmitting(true);
-    try {
-      const res = await createUserWithEmailAndPassword(
-        auth,
-        form.email,
-        form.password
-      );
-      console.log(res);
-    } catch (error) {
-      console.log(error.message);
-    } finally {
-      setIsSubmitting(false);
-    }
+    console.log(form);
   };
 
   return (
@@ -64,8 +48,16 @@ const Login = () => {
             resizeMode="contain"
             className="absolute top-0 right-0 w-full"
           />
-          <Title otherStyles="mt-[120px] mb-[50px]" label={"Entrar"} />
-          <View className="px-4">
+          <Title otherStyles="mt-[120px] mb-[50px]" label={"Cadastro"} />
+          <KeyboardAvoidingView className="px-4">
+            <Input
+              otherStyles={"mb-[40px]"}
+              label={"Nome"}
+              required={true}
+              value={form.name}
+              placeholder={"João Silva"}
+              onChangeText={(text) => setForm({ ...form, name: text })}
+            />
             <Input
               otherStyles={"mb-[40px]"}
               label={"E-mail"}
@@ -84,29 +76,37 @@ const Login = () => {
               onChangeText={(text) => setForm({ ...form, password: text })}
               placeholder={"••••"}
             />
+            <Input
+              otherStyles={"mb-[40px]"}
+              label={"Confirmar Senha"}
+              secureText={true}
+              required={true}
+              value={form.confirmPassword}
+              onChangeText={(text) =>
+                setForm({ ...form, confirmPassword: text })
+              }
+              placeholder={"••••"}
+            />
             <Button
-              isLoading={isSubmitting}
-              label={"Entrar"}
+              label={"Cadastrar"}
               size={"lg"}
               otherStyles={"mt-10"}
-              handleClick={signIn}
+              handleClick={onSubmit}
             />
             <TouchableOpacity
               className="mt-3 text-center w-100 items-center"
-              onPress={() => router.push("/sign-up")}
+              onPress={() => router.push("/login")}
             >
               <Text className=" text-gray">
-                Não tem uma conta?{" "}
-                <Text className="text-blue font-bold underline">
-                  Cadastre-se
-                </Text>
+                Já tem uma conta?{" "}
+                <Text className="text-blue font-bold underline">Entre</Text>
               </Text>
             </TouchableOpacity>
-          </View>
+          </KeyboardAvoidingView>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default Login;
+export default SignUp;

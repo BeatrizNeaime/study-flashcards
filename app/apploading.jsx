@@ -11,9 +11,10 @@ const AppLoading = () => {
       >
         <View className="h-full w-full items-center justify-center relative">
           <LottieView
-            source={require("../assets/lottie/loading.json")} // Caminho para o arquivo .json da animação
-            autoPlay
-            loop
+            source={require("../assets/lottie/loading.json")}
+            autoPlay={true}
+            loop={true}
+            replay={true}
             style={{ width: 500, height: 500 }}
           />
         </View>

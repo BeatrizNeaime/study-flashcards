@@ -12,6 +12,7 @@ import bg from "../assets/images/Ellipse.png";
 import cards from "../assets/images/cards.png";
 import Button from "../components/Button";
 import { router } from "expo-router";
+import Title from "./../components/Title";
 
 export default function Index() {
   let [fontsLoaded] = useFonts({
@@ -33,14 +34,10 @@ export default function Index() {
             resizeMode="contain"
             className="absolute top-0 right-0 w-full"
           />
-          <Text
-            className="font-poppins font-semibold text-4xl mt-[120px] mb-[50px]"
-            style={{
-              fontFamily: Poppins_600Regular,
-            }}
-          >
-            Study Flashcards
-          </Text>
+          <Title
+            otherStyles="mt-[120px] mb-[50px]"
+            label={"Study Flashcards"}
+          />
           <Text
             style={{
               fontFamily: "Nunito_400Regular",
@@ -54,7 +51,7 @@ export default function Index() {
           <Button
             label={"Começar"}
             size={"lg"}
-            otherStyles={"w-10/12"}
+            otherStyles={"w-10/12 mt-10"}
             handleClick={() => router.push("login")}
           />
         </View>
